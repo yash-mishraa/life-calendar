@@ -1,0 +1,18 @@
+<TaskerData sr="" dvi="1" tv="6.2.25">
+	<Profile sr="prof1" ve="2">
+		<cdate>1736782800000</cdate>
+		<edate>1736782800000</edate>
+		<id>1</id>
+		<mid0>1</mid0>
+		<nme>Daily Life Calendar Update</nme>
+		<Time sr="con0">
+			<fh>0</fh>
+			<fm>0</fm>
+			<th>0</th>
+			<tm>0</tm>
+			<rep>1</rep>
+			<repval>1</repval>
+			<reptype>2</reptype>
+		</Time>
+	</Profile>
+</TaskerData>

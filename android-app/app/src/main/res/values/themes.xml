@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.LifeCalendar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">#ff5533</item>
+        <item name="colorPrimaryVariant">#cc4422</item>
+        <item name="colorOnPrimary">#ffffff</item>
+        <item name="colorSecondary">#555555</item>
+        <item name="colorSecondaryVariant">#333333</item>
+        <item name="colorOnSecondary">#ffffff</item>
+        <item name="android:statusBarColor">#0f0f0f</item>
+        <item name="android:navigationBarColor">#0f0f0f</item>
+        <item name="android:windowBackground">#0f0f0f</item>
+    </style>
+</resources>

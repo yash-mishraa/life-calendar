@@ -1,0 +1,1473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Life Calendar — Year in Progress Wallpaper</title>
+  <meta name="description" content="A minimalist, premium year-in-progress calendar wallpaper for Android and iOS. 365 dots, auto-updating at local midnight, pixel-perfect for all phone models and orientations.">
+  <meta name="theme-color" content="#000000">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Life Calendar — Year in Progress Wallpaper">
+  <meta property="og:description" content="A minimalist 365-dot wallpaper that syncs at local midnight. Built for Android & iOS across all models and orientations.">
+  <meta property="og:type" content="website">
+
+  <style>
+    :root {
+      --bg-black: #000000;
+      --card-bg: #0a0a0a;
+      --surface-card: #121212;
+      --border-subtle: #1a1a1a;
+      --border-active: #2a2a2a;
+      --border-focus: #3d3d3d;
+      --dot-completed: #ffffff;
+      --dot-remaining: #383838;
+      --dot-today: #ff5533;
+      --text-white: #ffffff;
+      --text-secondary: #888888;
+      --text-muted: #555555;
+      --text-accent: #ff5533;
+      --font-sf: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      background-color: var(--bg-black);
+      color: var(--text-white);
+      font-family: var(--font-sf);
+      line-height: 1.5;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Nav */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: #000000;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .nav-container {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text-white);
+    }
+
+    .brand-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--text-accent);
+    }
+
+    .brand-name {
+      font-weight: 600;
+      font-size: 16px;
+      letter-spacing: -0.01em;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .nav-link {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.15s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--text-white);
+    }
+
+    .nav-btn {
+      background: #ffffff;
+      color: #000000;
+      padding: 7px 16px;
+      border-radius: 980px;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background 0.15s ease;
+    }
+
+    .nav-btn:hover {
+      background: #e5e5e5;
+    }
+
+    /* Main Container */
+    main {
+      flex: 1;
+      position: relative;
+      z-index: 1;
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 56px 24px 80px;
+      width: 100%;
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      max-width: 780px;
+      margin: 0 auto 50px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      background: #0d0d0d;
+      border: 1px solid var(--border-subtle);
+      border-radius: 980px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+      font-weight: 500;
+    }
+
+    .badge-indicator {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #30d158;
+    }
+
+    .hero-title {
+      font-size: clamp(38px, 6vw, 68px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin-bottom: 20px;
+      color: #ffffff;
+    }
+
+    .hero-desc {
+      font-size: clamp(16px, 2.3vw, 20px);
+      color: var(--text-secondary);
+      font-weight: 400;
+      max-width: 620px;
+      margin: 0 auto 34px;
+      line-height: 1.45;
+    }
+
+    .hero-cta {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 14px;
+    }
+
+    .btn-primary {
+      background: #ffffff;
+      color: #000000;
+      font-weight: 600;
+      font-size: 15px;
+      padding: 13px 26px;
+      border-radius: 980px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+
+    .btn-primary:hover {
+      background: #e5e5e5;
+    }
+
+    .btn-secondary {
+      background: #101010;
+      color: var(--text-white);
+      font-weight: 500;
+      font-size: 15px;
+      padding: 13px 24px;
+      border-radius: 980px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--border-subtle);
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+
+    .btn-secondary:hover {
+      background: #181818;
+      border-color: var(--border-active);
+    }
+
+    /* Interactive Showcase Controls */
+    .showcase-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 80px;
+    }
+
+    .controls-panel {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 28px;
+    }
+
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .selector-label {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .pills-group {
+      display: flex;
+      gap: 4px;
+      background: #0d0d0d;
+      padding: 4px;
+      border-radius: 980px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .pill-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 500;
+      padding: 6px 14px;
+      border-radius: 980px;
+      cursor: pointer;
+      font-family: inherit;
+      transition: color 0.15s ease, background 0.15s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pill-btn:hover {
+      color: var(--text-white);
+    }
+
+    .pill-btn.active {
+      background: #242424;
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    /* Phone Mockup Frame - Flat Minimalist */
+    .phone-mockup {
+      width: 340px;
+      height: 690px;
+      background: #000000;
+      border-radius: 48px;
+      border: 2px solid #222222;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      padding: 18px 18px 24px;
+      user-select: none;
+      transition: width 0.3s ease, height 0.3s ease, border-radius 0.3s ease;
+    }
+
+    /* Landscape Mode for Mockup */
+    .phone-mockup.landscape {
+      width: 660px;
+      height: 360px;
+      border-radius: 40px;
+    }
+
+    /* Dynamic Island */
+    .phone-island {
+      width: 100px;
+      height: 26px;
+      background: #101010;
+      border: 1px solid #1a1a1a;
+      border-radius: 20px;
+      position: absolute;
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 12px;
+      transition: all 0.3s ease;
+    }
+
+    .phone-mockup.landscape .phone-island {
+      top: 50%;
+      left: 14px;
+      transform: translateY(-50%) rotate(90deg);
+    }
+
+    .phone-island::after {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #000000;
+    }
+
+    /* Phone Screen Content */
+    .phone-screen {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 50px;
+      width: 100%;
+      height: 100%;
+    }
+
+    .phone-mockup.landscape .phone-screen {
+      padding-top: 10px;
+      padding-left: 20px;
+      flex-direction: row;
+      justify-content: space-around;
+      align-items: center;
+    }
+
+    /* Lock Screen Clock */
+    .phone-clock {
+      text-align: center;
+      margin-bottom: 14px;
+    }
+
+    .phone-date {
+      font-size: 13px;
+      font-weight: 500;
+      color: #999999;
+      margin-bottom: 2px;
+    }
+
+    .phone-time {
+      font-size: 52px;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      color: #ffffff;
+    }
+
+    .phone-mockup.landscape .phone-clock {
+      margin-bottom: 0;
+      text-align: left;
+    }
+
+    .phone-mockup.landscape .phone-time {
+      font-size: 40px;
+    }
+
+    /* Dot Grid in Phone */
+    .grid-canvas-wrap {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #wallpaperCanvas {
+      display: block;
+      border-radius: 8px;
+    }
+
+    /* Live tooltip */
+    .dot-tooltip {
+      position: absolute;
+      top: -30px;
+      background: #121212;
+      border: 1px solid var(--border-active);
+      color: #ffffff;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.15s ease;
+      white-space: nowrap;
+      z-index: 20;
+    }
+
+    /* Footer Stats in Phone */
+    .phone-stats {
+      margin-top: 14px;
+      font-size: 13px;
+      display: flex;
+      gap: 4px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .phone-mockup.landscape .phone-stats {
+      margin-top: 8px;
+      font-size: 12px;
+    }
+
+    .stat-accent {
+      color: var(--text-accent);
+      font-weight: 600;
+    }
+
+    .stat-muted {
+      color: var(--text-muted);
+    }
+
+    /* Device-Wise Customizer Section */
+    .device-customizer {
+      background: var(--card-bg);
+      border: 1px solid var(--border-subtle);
+      border-radius: 24px;
+      padding: 40px;
+      max-width: 920px;
+      margin: 0 auto 80px;
+    }
+
+    .customizer-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .customizer-title {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #ffffff;
+    }
+
+    .customizer-desc {
+      color: var(--text-secondary);
+      font-size: 15px;
+    }
+
+    .customizer-form {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+      margin-bottom: 26px;
+    }
+
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-field label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .select-input, .text-input {
+      background: #121212;
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      color: #ffffff;
+      padding: 12px 14px;
+      font-size: 14px;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+
+    .select-input:focus, .text-input:focus {
+      border-color: var(--border-focus);
+    }
+
+    .select-input option {
+      background: #121212;
+      color: #ffffff;
+    }
+
+    .badge-resolution {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #121212;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 500;
+      padding: 7px 16px;
+      border-radius: 980px;
+      margin-bottom: 22px;
+    }
+
+    .customizer-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 14px;
+    }
+
+    /* Feature Grid */
+    .features {
+      margin-bottom: 80px;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 44px;
+    }
+
+    .section-title {
+      font-size: 30px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+    }
+
+    .section-subtitle {
+      color: var(--text-secondary);
+      font-size: 16px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .feature-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-subtle);
+      border-radius: 18px;
+      padding: 28px;
+      transition: border-color 0.15s ease, background 0.15s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+
+    .feature-card:hover {
+      border-color: var(--border-active);
+      background: #0f0f0f;
+    }
+
+    .feature-icon {
+      font-size: 24px;
+      margin-bottom: 16px;
+      display: inline-block;
+    }
+
+    .feature-heading {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #ffffff;
+    }
+
+    .feature-text {
+      color: var(--text-secondary);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    /* Installation Tabs */
+    .setup-section {
+      background: var(--card-bg);
+      border: 1px solid var(--border-subtle);
+      border-radius: 24px;
+      padding: 40px;
+      max-width: 820px;
+      margin: 0 auto 80px;
+    }
+
+    .tabs-header {
+      display: flex;
+      border-bottom: 1px solid var(--border-subtle);
+      margin-bottom: 28px;
+      gap: 24px;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 15px;
+      font-weight: 600;
+      padding: 12px 4px;
+      cursor: pointer;
+      font-family: inherit;
+      position: relative;
+      transition: color 0.15s ease;
+    }
+
+    .tab-btn:hover {
+      color: var(--text-white);
+    }
+
+    .tab-btn.active {
+      color: var(--text-white);
+    }
+
+    .tab-btn.active::after {
+      content: "";
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--text-accent);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .step-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .step-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .step-number {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: #181818;
+      border: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      color: #ffffff;
+      flex-shrink: 0;
+    }
+
+    .step-body h4 {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: #ffffff;
+    }
+
+    .step-body p {
+      font-size: 14px;
+      color: var(--text-secondary);
+      line-height: 1.45;
+    }
+
+    .inline-code {
+      font-family: SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      background: #141414;
+      border: 1px solid var(--border-subtle);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 12px;
+      color: #ffffff;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border-subtle);
+      padding: 36px 24px;
+      background: #000000;
+      margin-top: auto;
+    }
+
+    .footer-content {
+      max-width: 1140px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      text-align: center;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+      font-size: 13px;
+    }
+
+    .footer-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--text-white);
+    }
+
+    .footer-note {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .phone-mockup {
+        width: 300px;
+        height: 610px;
+      }
+      .phone-mockup.landscape {
+        width: 100%;
+        max-width: 520px;
+        height: 310px;
+      }
+      .setup-section, .device-customizer {
+        padding: 22px;
+      }
+      .hero-cta {
+        flex-direction: column;
+      }
+      .btn-primary, .btn-secondary {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="nav-container">
+      <a href="#" class="brand">
+        <div class="brand-dot"></div>
+        <span class="brand-name">Life Calendar</span>
+      </a>
+      <div class="nav-links">
+        <a href="#preview" class="nav-link">Live Mockup</a>
+        <a href="#models" class="nav-link">Device Models</a>
+        <a href="#features" class="nav-link">Features</a>
+        <a href="#install" class="nav-link">Install</a>
+        <a href="https://github.com/yash-mishraa/life-calendar" target="_blank" class="nav-link">GitHub</a>
+        <a href="LifeCalendar.apk" download class="nav-btn">Get APK</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main>
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="badge">
+        <div class="badge-indicator"></div>
+        <span>Model-Wise Exact Fit • Portrait & Landscape • Local Midnight Sync</span>
+      </div>
+      <h1 class="hero-title">Your year.<br>One dot at a time.</h1>
+      <p class="hero-desc">
+        A minimalist calendar wallpaper engineered to fit every phone, tablet, and screen size down to the exact pixel. Seamlessly auto-updating at local midnight in pure jet black.
+      </p>
+      <div class="hero-cta">
+        <a href="LifeCalendar.apk" download="LifeCalendar.apk" class="btn-primary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-1.0001 0-.5516.4482-1.0002.9993-1.0002.5516 0 1.0002.4486 1.0002 1.0002 0 .5515-.4486 1.0001-1.0002 1.0001m-11.046 0c-.5511 0-.9993-.4486-.9993-1.0001 0-.5516.4482-1.0002.9993-1.0002.5516 0 1.0002.4486 1.0002 1.0002 0 .5515-.4486 1.0001-1.0002 1.0001m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1523-.5676.416.416 0 00-.5676.1523l-2.0223 3.503C15.5902 8.4126 13.8533 8.0934 12 8.0934c-1.8533 0-3.5902.3192-5.1366.8564L4.841 5.4469a.4161.4161 0 00-.5677-.1523.4157.4157 0 00-.1522.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3432-4.1021-2.6889-7.5743-6.1185-9.4396"/>
+          </svg>
+          Download Android APK
+        </a>
+        <a href="#models" class="btn-secondary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+            <line x1="12" y1="18" x2="12.01" y2="18"></line>
+          </svg>
+          Select Your Phone Model
+        </a>
+      </div>
+    </section>
+
+    <!-- Interactive Mockup & Live Canvas -->
+    <section class="showcase-container" id="preview">
+      
+      <div class="controls-panel">
+        <!-- Year Selection -->
+        <div class="control-group">
+          <span class="selector-label">Year Progression</span>
+          <div class="pills-group" id="yearPills">
+            <button class="pill-btn active" data-year="2026">2026</button>
+            <button class="pill-btn" data-year="2027">2027</button>
+            <button class="pill-btn" data-year="2028">2028 (Leap)</button>
+            <button class="pill-btn" data-year="2029">2029</button>
+            <button class="pill-btn" data-year="2030">2030</button>
+            <button class="pill-btn" data-year="2031">2031</button>
+          </div>
+        </div>
+
+        <!-- Orientation Toggle -->
+        <div class="control-group">
+          <span class="selector-label">Screen Orientation</span>
+          <div class="pills-group" id="orientationPills">
+            <button class="pill-btn active" data-orient="portrait">
+              <span>📱 Portrait (15×25)</span>
+            </button>
+            <button class="pill-btn" data-orient="landscape">
+              <span>🔄 Landscape (25×15)</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phone Frame (adapts to Portrait or Landscape) -->
+      <div class="phone-mockup" id="phoneMockup">
+        <div class="phone-island"></div>
+
+        <div class="phone-screen">
+          <div class="phone-clock">
+            <div class="phone-date" id="phoneDateDisplay">Wednesday, October 28</div>
+            <div class="phone-time" id="phoneTimeDisplay">09:41</div>
+          </div>
+
+          <div class="grid-canvas-wrap">
+            <canvas id="wallpaperCanvas" width="280" height="380"></canvas>
+            <div class="dot-tooltip" id="dotTooltip"></div>
+          </div>
+
+          <div class="phone-stats">
+            <span class="stat-accent" id="statDays">65d</span>
+            <span class="stat-muted">left · </span>
+            <span class="stat-muted" id="statPercent">82%</span>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Model-Wise Wallpaper Engine -->
+    <section class="device-customizer" id="models">
+      <div class="customizer-header">
+        <h2 class="customizer-title">Exact Screen Fit for Every Device</h2>
+        <p class="customizer-desc">Choose your exact model or auto-detect your screen. Generates a custom wallpaper mapped directly to your hardware's native pixels.</p>
+      </div>
+
+      <div class="customizer-form">
+        <div class="form-field">
+          <label for="deviceSelect">Device Model</label>
+          <select id="deviceSelect" class="select-input">
+            <optgroup label="Auto Detection">
+              <option value="auto" selected>✨ Auto-Detect My Current Screen</option>
+            </optgroup>
+            <optgroup label="Apple iPhone">
+              <option value="1320x2868">iPhone 16 / 15 Pro Max (1320 × 2868)</option>
+              <option value="1179x2556">iPhone 16 / 15 / 14 Pro (1179 × 2556)</option>
+              <option value="1170x2532">iPhone 16 / 15 / 14 / 13 (1170 × 2532)</option>
+              <option value="1080x2340">iPhone 13 mini / 12 mini (1080 × 2340)</option>
+              <option value="750x1334">iPhone SE / 8 (750 × 1334)</option>
+            </optgroup>
+            <optgroup label="Samsung Galaxy">
+              <option value="1440x3120">Galaxy S24 Ultra / S23 Ultra (1440 × 3120)</option>
+              <option value="1080x2340_s24">Galaxy S24 / S23 / S22 (1080 × 2340)</option>
+              <option value="1856x2160">Galaxy Z Fold 6 (Inner 1856 × 2160)</option>
+              <option value="1080x2640">Galaxy Z Flip 6 (1080 × 2640)</option>
+            </optgroup>
+            <optgroup label="Google Pixel">
+              <option value="1344x2992">Pixel 9 Pro XL / 8 Pro (1344 × 2992)</option>
+              <option value="1080x2424">Pixel 9 / 8 (1080 × 2424)</option>
+              <option value="1080x2400">Pixel 7 / 7a (1080 × 2400)</option>
+            </optgroup>
+            <optgroup label="OnePlus & Xiaomi">
+              <option value="1440x3168">OnePlus 12 / Open (1440 × 3168)</option>
+              <option value="1080x2412">OnePlus 11 / Nord (1080 × 2412)</option>
+              <option value="1440x3200">Xiaomi 14 Pro / Ultra (1440 × 3200)</option>
+            </optgroup>
+            <optgroup label="iPad & Tablets">
+              <option value="2064x2752">iPad Pro 13" (2064 × 2752)</option>
+              <option value="1640x2360">iPad Air 11" (1640 × 2360)</option>
+              <option value="1488x2266">iPad mini (1488 × 2266)</option>
+            </optgroup>
+            <optgroup label="Custom">
+              <option value="custom">⚙️ Custom Resolution</option>
+            </optgroup>
+          </select>
+        </div>
+
+        <div class="form-field" id="customResFields" style="display: none;">
+          <label>Custom Width × Height</label>
+          <div style="display: flex; gap: 8px;">
+            <input type="number" id="customWidth" class="text-input" placeholder="Width (e.g. 1080)" value="1080" style="width: 50%;">
+            <input type="number" id="customHeight" class="text-input" placeholder="Height (e.g. 2400)" value="2400" style="width: 50%;">
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label for="exportOrientation">Target Orientation</label>
+          <select id="exportOrientation" class="select-input">
+            <option value="portrait" selected>📱 Portrait (Vertical phone display)</option>
+            <option value="landscape">🔄 Landscape (Horizontal / Tablet display)</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="text-align: center;">
+        <div class="badge-resolution" id="resStatusBadge">
+          Target: 1179 × 2556 px • Portrait • 15 × 25 grid
+        </div>
+
+        <div class="customizer-actions">
+          <button id="btnDownloadWallpaper" class="btn-primary">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            Download Pixel-Perfect Wallpaper (.PNG)
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features" id="features">
+      <div class="section-header">
+        <h2 class="section-title">Pure focus. Zero distraction.</h2>
+        <p class="section-subtitle">Engineered with intentional constraints.</p>
+      </div>
+
+      <div class="feature-grid">
+        <div class="feature-card">
+          <span class="feature-icon">📐</span>
+          <h3 class="feature-heading">Exact Native Fit</h3>
+          <p class="feature-text">Dynamically queries your device screen metrics. Whether you have an S24 Ultra, iPhone 16 Pro Max, Pixel, or iPad, the wallpaper renders with zero blurry stretching or unwanted cropping.</p>
+        </div>
+
+        <div class="feature-card">
+          <span class="feature-icon">🔄</span>
+          <h3 class="feature-heading">Orientation Adaptive</h3>
+          <p class="feature-text">Automatically shifts between 15 × 25 in Portrait and 25 × 15 in Landscape. Preserves the full 365/366 dots centered with optimal margins.</p>
+        </div>
+
+        <div class="feature-card">
+          <span class="feature-icon">⏱️</span>
+          <h3 class="feature-heading">Phone Local Midnight Sync</h3>
+          <p class="feature-text">Never hardcoded to UTC. As soon as your phone's clock strikes 12:00:00 AM in your exact region, your wallpaper silently steps forward one dot.</p>
+        </div>
+
+        <div class="feature-card">
+          <span class="feature-icon">✨</span>
+          <h3 class="feature-heading">Apple Jet Black Aesthetic</h3>
+          <p class="feature-text">Deepest OLED jet black with crisp San Francisco typography. Blends seamlessly with your lock screen clock and notifications.</p>
+        </div>
+
+        <div class="feature-card">
+          <span class="feature-icon">🗓️</span>
+          <h3 class="feature-heading">2026 Through 2031+ Ready</h3>
+          <p class="feature-text">Dynamic calendar math that automatically accounts for leap years (including 366 dots in 2028 and 2032) without any manual intervention.</p>
+        </div>
+
+        <div class="feature-card">
+          <span class="feature-icon">🔒</span>
+          <h3 class="feature-heading">Lock & Home Screen Sync</h3>
+          <p class="feature-text">Automatically applies to both your phone's lock screen and home screen seamlessly. Always in sync, never outdated.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Setup Guide -->
+    <section class="setup-section" id="install">
+      <div class="tabs-header">
+        <button class="tab-btn active" data-tab="android">Android Setup</button>
+        <button class="tab-btn" data-tab="ios">iOS / iPhone Setup</button>
+      </div>
+
+      <!-- Android Content -->
+      <div class="tab-content active" id="tab-android">
+        <ol class="step-list">
+          <li class="step-item">
+            <div class="step-number">1</div>
+            <div class="step-body">
+              <h4>Download the APK</h4>
+              <p>Download <a href="LifeCalendar.apk" download style="color: var(--text-accent); text-decoration: underline;">LifeCalendar.apk</a> directly to your Android device.</p>
+            </div>
+          </li>
+          <li class="step-item">
+            <div class="step-number">2</div>
+            <div class="step-body">
+              <h4>Install and Open</h4>
+              <p>Tap the downloaded APK and select <span class="inline-code">Install</span>. (If prompted, allow "Install unknown apps" in Settings).</p>
+            </div>
+          </li>
+          <li class="step-item">
+            <div class="step-number">3</div>
+            <div class="step-body">
+              <h4>Tap "Apply Wallpaper"</h4>
+              <p>Tap the black <strong>Apply Wallpaper</strong> button. The app measures your phone screen and sets both Lock and Home screen wallpapers with automatic local midnight updates.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+
+      <!-- iOS Content -->
+      <div class="tab-content" id="tab-ios">
+        <ol class="step-list">
+          <li class="step-item">
+            <div class="step-number">1</div>
+            <div class="step-body">
+              <h4>Option A: Native Lock Screen & Home Screen Widget</h4>
+              <p>Open the included <span class="inline-code">ios-app</span> in Xcode or install the companion widget. It refreshes at 12:00 AM local time automatically using Apple's <span class="inline-code">WidgetKit</span>.</p>
+            </div>
+          </li>
+          <li class="step-item">
+            <div class="step-number">2</div>
+            <div class="step-body">
+              <h4>Option B: 1-Minute Apple Shortcuts Automation</h4>
+              <p>On iOS, third-party apps cannot change system wallpapers silently in the background without Apple Shortcuts automation:
+                <br>• Open native <strong>Shortcuts</strong> on iPhone → tap <strong>Automation</strong>.
+                <br>• Tap <strong>+</strong> → <strong>Time of Day</strong> → set to <strong>12:00 AM Daily</strong>.
+                <br>• Select <strong>Run Immediately</strong> (disable "Notify When Run").
+                <br>• Add action: <strong>Set Wallpaper</strong> with your downloaded Life Calendar photo.
+              </p>
+            </div>
+          </li>
+          <li class="step-item">
+            <div class="step-number">3</div>
+            <div class="step-body">
+              <h4>Done</h4>
+              <p>Every night at 12:00 AM sharp, your iPhone quietly steps to the new day without touching a button.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-links">
+        <a href="https://github.com/yash-mishraa/life-calendar" target="_blank">GitHub Repository</a>
+        <a href="LifeCalendar.apk" download>Direct APK Download</a>
+        <a href="#models">Model Presets</a>
+        <a href="#install">Instructions</a>
+      </div>
+      <p class="footer-note">Life Calendar • Minimalist year-in-progress wallpaper • 2026 – 2031+</p>
+    </div>
+  </footer>
+
+  <!-- Script: Interactive Engine & Dynamic Canvas -->
+  <script>
+    (function() {
+      const canvas = document.getElementById('wallpaperCanvas');
+      const ctx = canvas.getContext('2d');
+      const phoneMockup = document.getElementById('phoneMockup');
+      const yearPills = document.querySelectorAll('#yearPills .pill-btn');
+      const orientationPills = document.querySelectorAll('#orientationPills .pill-btn');
+      const tabBtns = document.querySelectorAll('.tab-btn');
+      const tabContents = document.querySelectorAll('.tab-content');
+      const statDays = document.getElementById('statDays');
+      const statPercent = document.getElementById('statPercent');
+      const phoneDateDisplay = document.getElementById('phoneDateDisplay');
+      const phoneTimeDisplay = document.getElementById('phoneTimeDisplay');
+      const tooltip = document.getElementById('dotTooltip');
+      
+      const deviceSelect = document.getElementById('deviceSelect');
+      const exportOrientation = document.getElementById('exportOrientation');
+      const customResFields = document.getElementById('customResFields');
+      const customWidth = document.getElementById('customWidth');
+      const customHeight = document.getElementById('customHeight');
+      const resStatusBadge = document.getElementById('resStatusBadge');
+      const btnDownload = document.getElementById('btnDownloadWallpaper');
+
+      let selectedYear = new Date().getFullYear();
+      let currentMockupOrientation = 'portrait';
+      let dotsGeometry = [];
+
+      // Update phone clock
+      function updateClock() {
+        const now = new Date();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        phoneTimeDisplay.textContent = `${hours}:${minutes}`;
+
+        const options = { weekday: 'long', month: 'long', day: 'numeric' };
+        phoneDateDisplay.textContent = now.toLocaleDateString('en-US', options);
+      }
+      setInterval(updateClock, 1000);
+      updateClock();
+
+      function isLeapYear(yr) {
+        return (yr % 4 === 0 && yr % 100 != 0) || (yr % 400 === 0);
+      }
+
+      function getDayOfYear(date) {
+        const start = new Date(date.getFullYear(), 0, 0);
+        const diff = date - start;
+        const oneDay = 1000 * 60 * 60 * 24;
+        return Math.floor(diff / oneDay);
+      }
+
+      function calculateProgress(year) {
+        const now = new Date();
+        const totalDays = isLeapYear(year) ? 366 : 365;
+        let dayOfYear;
+
+        if (year === now.getFullYear()) {
+          dayOfYear = getDayOfYear(now);
+        } else if (year < now.getFullYear()) {
+          dayOfYear = totalDays + 1;
+        } else {
+          dayOfYear = 0;
+        }
+
+        const daysPassed = Math.max(0, Math.min(dayOfYear - 1, totalDays));
+        const daysRemaining = Math.max(0, totalDays - dayOfYear);
+        const percentage = Math.min(100, Math.round((daysPassed / totalDays) * 100));
+
+        return { year, totalDays, dayOfYear, daysPassed, daysRemaining, percentage };
+      }
+
+      function renderMockup() {
+        const isLandscape = (currentMockupOrientation === 'landscape');
+        const progress = calculateProgress(selectedYear);
+        statDays.textContent = `${progress.daysRemaining}d`;
+        statPercent.textContent = `${progress.percentage}%`;
+
+        if (isLandscape) {
+          canvas.width = 380;
+          canvas.height = 240;
+          phoneMockup.classList.add('landscape');
+        } else {
+          canvas.width = 280;
+          canvas.height = 380;
+          phoneMockup.classList.remove('landscape');
+        }
+
+        const w = canvas.width;
+        const h = canvas.height;
+        ctx.clearRect(0, 0, w, h);
+
+        ctx.fillStyle = "#1c1c1c";
+        ctx.fillRect(0, 0, w, h);
+
+        const cols = isLandscape ? 25 : 15;
+        const rows = isLandscape ? 15 : 25;
+
+        const maxGridW = w * 0.88;
+        const maxGridH = isLandscape ? (h * 0.80) : (h * 0.75);
+
+        const spacingX = maxGridW / (cols - 1);
+        const spacingY = maxGridH / (rows - 1);
+        const dotSpacing = Math.min(spacingX, spacingY);
+        const dotRadius = (dotSpacing * 0.65) / 2;
+
+        const gridW = (cols - 1) * dotSpacing;
+        const gridH = (rows - 1) * dotSpacing;
+
+        const startX = (w - gridW) / 2;
+        const startY = (h - gridH) / 2;
+
+        dotsGeometry = [];
+        let dayCounter = 1;
+
+        for (let r = 0; r < rows; r++) {
+          for (let c = 0; c < cols; c++) {
+            if (dayCounter > progress.totalDays) break;
+
+            const cx = startX + c * dotSpacing;
+            const cy = startY + r * dotSpacing;
+
+            let fillColor = "#555555";
+            let type = 'remaining';
+            if (dayCounter < progress.dayOfYear) {
+              fillColor = "#ffffff";
+              type = 'completed';
+            } else if (dayCounter === progress.dayOfYear) {
+              fillColor = "#ff5533";
+              type = 'today';
+            }
+
+            ctx.beginPath();
+            ctx.arc(cx, cy, dotRadius, 0, Math.PI * 2);
+            ctx.fillStyle = fillColor;
+            ctx.fill();
+
+            dotsGeometry.push({
+              day: dayCounter,
+              x: cx,
+              y: cy,
+              radius: dotRadius * 1.5,
+              type: type
+            });
+
+            dayCounter++;
+          }
+        }
+      }
+
+      // Year pills
+      yearPills.forEach(pill => {
+        pill.addEventListener('click', () => {
+          yearPills.forEach(p => p.classList.remove('active'));
+          pill.classList.add('active');
+          selectedYear = parseInt(pill.getAttribute('data-year'), 10);
+          renderMockup();
+        });
+      });
+
+      // Orientation pills
+      orientationPills.forEach(pill => {
+        pill.addEventListener('click', () => {
+          orientationPills.forEach(p => p.classList.remove('active'));
+          pill.classList.add('active');
+          currentMockupOrientation = pill.getAttribute('data-orient');
+          exportOrientation.value = currentMockupOrientation;
+          updateSelectedResolution();
+          renderMockup();
+        });
+      });
+
+      // Tabs
+      tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          tabBtns.forEach(b => b.classList.remove('active'));
+          tabContents.forEach(c => c.classList.remove('active'));
+
+          btn.classList.add('active');
+          const targetTab = btn.getAttribute('data-tab');
+          document.getElementById(`tab-${targetTab}`).classList.add('active');
+        });
+      });
+
+      // Canvas hover tooltip
+      canvas.addEventListener('mousemove', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+        const mouseX = (e.clientX - rect.left) * scaleX;
+        const mouseY = (e.clientY - rect.top) * scaleY;
+
+        let hit = null;
+        for (let dot of dotsGeometry) {
+          const dx = mouseX - dot.x;
+          const dy = mouseY - dot.y;
+          if (dx * dx + dy * dy <= dot.radius * dot.radius * 2) {
+            hit = dot;
+            break;
+          }
+        }
+
+        if (hit) {
+          const date = new Date(selectedYear, 0, hit.day);
+          const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+          tooltip.textContent = `Day ${hit.day} • ${dateStr} (${hit.type})`;
+          tooltip.style.left = `${(e.clientX - rect.left)}px`;
+          tooltip.style.top = `${(e.clientY - rect.top) - 34}px`;
+          tooltip.style.opacity = '1';
+        } else {
+          tooltip.style.opacity = '0';
+        }
+      });
+
+      canvas.addEventListener('mouseleave', () => {
+        tooltip.style.opacity = '0';
+      });
+
+      // Resolution helper
+      function getResolvedDimensions() {
+        const val = deviceSelect.value;
+        const orient = exportOrientation.value;
+        let w = 1179, h = 2556;
+
+        if (val === 'auto') {
+          const ratio = window.devicePixelRatio || 1;
+          w = Math.round(window.screen.width * ratio);
+          h = Math.round(window.screen.height * ratio);
+          if (w > h && orient === 'portrait') {
+            const temp = w; w = h; h = temp;
+          } else if (h > w && orient === 'landscape') {
+            const temp = w; w = h; h = temp;
+          }
+        } else if (val === 'custom') {
+          w = parseInt(customWidth.value, 10) || 1080;
+          h = parseInt(customHeight.value, 10) || 2400;
+        } else {
+          const cleanVal = val.replace(/_s24$/, '');
+          const parts = cleanVal.split('x');
+          w = parseInt(parts[0], 10);
+          h = parseInt(parts[1], 10);
+        }
+
+        if (orient === 'landscape' && w < h) {
+          const temp = w; w = h; h = temp;
+        } else if (orient === 'portrait' && w > h) {
+          const temp = w; w = h; h = temp;
+        }
+
+        return { width: w, height: h, orientation: orient };
+      }
+
+      function updateSelectedResolution() {
+        if (deviceSelect.value === 'custom') {
+          customResFields.style.display = 'block';
+        } else {
+          customResFields.style.display = 'none';
+        }
+
+        const dims = getResolvedDimensions();
+        const cols = (dims.orientation === 'landscape') ? 25 : 15;
+        const rows = (dims.orientation === 'landscape') ? 15 : 25;
+        resStatusBadge.textContent = `Target: ${dims.width} × ${dims.height} px • ${dims.orientation.toUpperCase()} • ${cols}×${rows} grid`;
+      }
+
+      deviceSelect.addEventListener('change', updateSelectedResolution);
+      exportOrientation.addEventListener('change', () => {
+        currentMockupOrientation = exportOrientation.value;
+        orientationPills.forEach(p => {
+          if (p.getAttribute('data-orient') === currentMockupOrientation) {
+            p.classList.add('active');
+          } else {
+            p.classList.remove('active');
+          }
+        });
+        updateSelectedResolution();
+        renderMockup();
+      });
+      customWidth.addEventListener('input', updateSelectedResolution);
+      customHeight.addEventListener('input', updateSelectedResolution);
+
+      // Model-Wise Wallpaper Generation & Download
+      btnDownload.addEventListener('click', () => {
+        const dims = getResolvedDimensions();
+        const W = dims.width;
+        const H = dims.height;
+        const isLandscape = (dims.orientation === 'landscape');
+
+        const offCanvas = document.createElement('canvas');
+        offCanvas.width = W;
+        offCanvas.height = H;
+        const offCtx = offCanvas.getContext('2d');
+
+        const progress = calculateProgress(selectedYear);
+
+        // Jet Black Background
+        offCtx.fillStyle = "#1c1c1c";
+        offCtx.fillRect(0, 0, W, H);
+
+        const cols = isLandscape ? 25 : 15;
+        const rows = isLandscape ? 15 : 25;
+
+        const maxGridW = W * 0.82;
+        const maxGridH = isLandscape ? (H * 0.68) : (H * 0.58);
+
+        const spacingX = maxGridW / (cols - 1);
+        const spacingY = maxGridH / (rows - 1);
+        const dotSpacing = Math.min(spacingX, spacingY);
+        const dotDiameter = dotSpacing * 0.68;
+
+        const gridWidth = (cols - 1) * dotSpacing + dotDiameter;
+        const gridHeight = (rows - 1) * dotSpacing + dotDiameter;
+
+        const startX = (W - gridWidth) / 2 + dotDiameter / 2;
+        const startY = isLandscape ?
+          ((H - gridHeight) / 2 - (H * 0.03)) :
+          (H * 0.20); // Room for dynamic island/lockscreen clock
+
+        let dayCounter = 1;
+        for (let r = 0; r < rows; r++) {
+          for (let c = 0; c < cols; c++) {
+            if (dayCounter > progress.totalDays) break;
+            const x = startX + c * dotSpacing;
+            const y = startY + r * dotSpacing;
+
+            let color = "#555555";
+            if (dayCounter < progress.dayOfYear) {
+              color = "#ffffff";
+            } else if (dayCounter === progress.dayOfYear) {
+              color = "#ff5533";
+            }
+
+            offCtx.beginPath();
+            offCtx.arc(x, y, dotDiameter / 2, 0, Math.PI * 2);
+            offCtx.fillStyle = color;
+            offCtx.fill();
+            dayCounter++;
+          }
+        }
+
+        // Stats at bottom
+        const textSize = dotDiameter * 1.0;
+        const textY = H - (isLandscape ? (H * 0.08) : (H * 0.06));
+        offCtx.font = `${textSize}px -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif`;
+        
+        const daysText = `${progress.daysRemaining}d`;
+        const midText = " left · ";
+        const percentText = `${progress.percentage}%`;
+
+        offCtx.fillStyle = "#ff5533";
+        const w1 = offCtx.measureText(daysText).width;
+        offCtx.fillStyle = "#555555";
+        const w2 = offCtx.measureText(midText).width;
+        const w3 = offCtx.measureText(percentText).width;
+        const totalW = w1 + w2 + w3;
+
+        let curX = (W - totalW) / 2;
+        offCtx.fillStyle = "#ff5533";
+        offCtx.fillText(daysText, curX, textY);
+        curX += w1;
+        offCtx.fillStyle = "#555555";
+        offCtx.fillText(midText, curX, textY);
+        curX += w2;
+        offCtx.fillText(percentText, curX, textY);
+
+        // Download PNG
+        const link = document.createElement('a');
+        link.download = `life-calendar-${selectedYear}-${W}x${H}-${dims.orientation}.png`;
+        link.href = offCanvas.toDataURL('image/png');
+        link.click();
+      });
+
+      // Initial render & sync
+      updateSelectedResolution();
+      renderMockup();
+    })();
+  </script>
+</body>
+</html>
