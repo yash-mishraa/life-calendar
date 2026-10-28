@@ -20,6 +20,8 @@ class MidnightAlarmReceiver : BroadcastReceiver() {
         private const val TAG = "LifeCalendar"
         private const val REQUEST_CODE = 1001
         private const val TEST_REQUEST_CODE = 1002
+        private var lastUpdateTime = 0L
+        private const val MIN_UPDATE_INTERVAL_MS = 5000L
 
         /**
          * Schedule the midnight alarm for wallpaper update.
@@ -128,6 +130,13 @@ class MidnightAlarmReceiver : BroadcastReceiver() {
     }
 
     private fun updateWallpaper(context: Context) {
+        val now = System.currentTimeMillis()
+        if (now - lastUpdateTime < MIN_UPDATE_INTERVAL_MS) {
+            Log.d(TAG, "Throttling update request; skipped")
+            return
+        }
+        lastUpdateTime = now
+
         try {
             val bitmap = WallpaperGenerator.generate(context)
             val wallpaperManager = WallpaperManager.getInstance(context)

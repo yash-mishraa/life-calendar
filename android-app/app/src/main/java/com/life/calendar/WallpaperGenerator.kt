@@ -28,8 +28,7 @@ object WallpaperGenerator {
         val percentage: Int
     )
 
-    fun getYearProgress(): YearProgress {
-        val calendar = Calendar.getInstance()
+    fun getYearProgress(calendar: Calendar = Calendar.getInstance()): YearProgress {
         val year = calendar.get(Calendar.YEAR)
         val dayOfYear = calendar.get(Calendar.DAY_OF_YEAR)
         

@@ -28,7 +28,7 @@
 		<Action sr="act2" ve="7">
 			<code>973</code>
 			<Str sr="arg0" ve="3">/storage/emulated/0/Pictures/LifeCalendar/life_calendar.png</Str>
-			<Int sr="arg1" val="1"/>
+			<Int sr="arg1" val="0"/>
 		</Action>
 	</Task>
 </TaskerData>

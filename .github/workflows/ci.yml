@@ -1,0 +1,37 @@
+name: CI & Quality Audit
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Python Dependencies
+        run: pip install Pillow
+
+      - name: Run Python Unit Tests
+        run: python -m unittest tests/test_life_calendar.py
+
+      - name: Run Android Tests & Assemble APK
+        working-directory: ./android-app
+        run: |
+          chmod +x gradlew
+          ./gradlew test assembleDebug
